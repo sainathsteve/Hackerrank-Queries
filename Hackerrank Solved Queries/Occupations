@@ -1,0 +1,39 @@
+--Occupations
+--Pivot the Occupation column in OCCUPATIONS so that each Name is sorted alphabetically and displayed underneath its corresponding Occupation. The output column headers should be Doctor, Professor, Singer, and Actor, respectively.
+--Note: Print NULL when there are no more names corresponding to an occupation.
+
+WITH 
+    table1 AS (
+    SELECT CASE WHEN Occupation = 'Doctor' THEN Name ELSE NULL END AS Doctor,
+           CASE WHEN Occupation = 'Professor' THEN Name ELSE NULL END AS Professor,
+           CASE WHEN Occupation = 'Singer' THEN Name ELSE NULL END AS Singer,
+           CASE WHEN Occupation = 'Actor' THEN Name ELSE NULL END AS Actor
+    FROM OCCUPATIONS),
+    
+    tableD AS (
+    SELECT ROW_NUMBER() OVER() AS RNO, Doctor
+    FROM table1
+    ORDER BY Doctor IS NULL, Doctor ASC),
+    
+    tableP AS (
+    SELECT ROW_NUMBER() OVER() AS RNO, Professor
+    FROM table1
+    ORDER BY Professor IS NULL, Professor ASC),
+    
+    tableS AS (
+    SELECT ROW_NUMBER() OVER() AS RNO, Singer
+    FROM table1
+    ORDER BY Singer IS NULL, Singer ASC),
+    
+    tableA AS (
+    SELECT ROW_NUMBER() OVER() AS RNO, Actor
+    FROM table1
+    ORDER BY Actor IS NULL, Actor ASC)
+    
+SELECT d.Doctor, p.Professor, s.Singer, a.Actor
+FROM tableD d
+LEFT JOIN tableP p ON d.RNO = p.RNO
+LEFT JOIN tableS s ON d.RNO = s.RNO
+LEFT JOIN tableA a ON d.RNO = a.RNO
+WHERE p.Professor IS NOT NULL
+ORDER BY d.RNO;
