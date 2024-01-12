@@ -1,5 +1,5 @@
 --Weather Observation Station 19
---Query the Euclidean Distance between points  and  and format your answer to display 4 decimal digits.
+--Query the Euclidean Distance between points P1 and P2 and format your answer to display 4 decimal digits.
 
 WITH table1 AS (
     SELECT
