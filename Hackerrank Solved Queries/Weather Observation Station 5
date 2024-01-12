@@ -1,0 +1,29 @@
+--Weather Observation Station 5
+--Query the two cities in STATION with the shortest and longest CITY names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
+
+
+WITH 
+	TABLE1 AS (
+	SELECT CITY, LENGTH(CITY) AS LENS
+	FROM STATION
+	ORDER BY LENS ),
+
+	TABLE2 AS (
+	SELECT CITY, LENS
+	FROM TABLE1
+	WHERE LENS IN (SELECT MIN(LENS) FROM TABLE1)
+	ORDER BY CITY
+	LIMIT 1),
+
+	TABLE3 AS (
+	SELECT CITY, LENS
+	FROM TABLE1
+	WHERE LENS IN (SELECT MAX(LENS) FROM TABLE1)
+	ORDER BY CITY
+	LIMIT 1)
+
+SELECT CITY, LENS
+FROM TABLE2
+UNION 
+SELECT CITY, LENS
+FROM TABLE3;
